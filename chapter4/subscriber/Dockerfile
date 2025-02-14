@@ -6,7 +6,7 @@ ENV TZ=America/Los_Angeles
 
 # install needed system programs
 # we include procps and telnet so you can use these with shell.sh prompt
-RUN apt-get update -qq >/dev/null && apt-get install -y -qq curl procps telnet >/dev/null
+# RUN apt-get update -qq >/dev/null && apt-get install -y -qq curl procps telnet >/dev/null
 
 # add a user - this user will own the files in /home/app
 RUN useradd --user-group --create-home --shell /bin/false app
@@ -15,7 +15,7 @@ RUN useradd --user-group --create-home --shell /bin/false app
 ENV HOME=/usr/app
 WORKDIR /home/app
 COPY . /home/app
-RUN yarn install
+RUN npm install
 
 # we run a script to stat the server; the array syntax makes it so ^C will work as we want
-CMD  ["yarn", "start"]
+CMD  ["npm", "start"]

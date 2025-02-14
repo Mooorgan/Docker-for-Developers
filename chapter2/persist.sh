@@ -9,7 +9,7 @@
 docker run \
     --rm \
     -p8086:80 \
-    --name="chapter2" \
-    -v `pwd`:/home/app \
+    --name chapter2 \
+    -v "$(pwd)":/home/app \
     -v name:/data \
     chapter2

@@ -3,7 +3,7 @@
 SERVICE=mongodb # name of the service
 
 # Change this to an EXISTING directory on the HOST where the mongodb database files will be created and maintained.
-#MONGO_DATADIR="$HOME/data"
+# MONGO_DATADIR="~/mongodb"
 # Stop any running MongoDB container, remove previous container, pull newer version
 docker stop $SERVICE
 docker rm $SERVICE
@@ -16,6 +16,6 @@ docker run \
   --restart always \
   -e TITLE=$SERVICE \
   -p 27017:27017 \
-  -v "$MONGO_DATADIR":/data/db \
+  -v /home/shaishav/mongodb:/data/db \
   mongo:3.4
 

@@ -23,17 +23,18 @@ const debug = require("debug")("subscriber"),
  */
 const waitOn = require("wait-on"),
   wait_for_services = async () => {
-  try {
-    debug(`waiting for mqtt (${mqtt_host}:${mqtt_port})`);
-    await waitOn({ resources: [`tcp:${mqtt_host}:${mqtt_port}`] });
-    debug(`waiting for redis (${redis_host}:${redis_port})`);
-    await waitOn({ resources: [`tcp:${redis_host}:${redis_port}`] });
-    debug(`waiting for mongo (${mongo_host}:${mongo_port})`);
-    await waitOn({ resources: [`tcp:${mongo_host}:${mongo_port}`] });
-  } catch (e) {
-    debug("***** exception ", e.stack);
-  }
-};
+    try {
+      debug(`waiting for mqtt (${mqtt_host}:${mqtt_port})`);
+      await waitOn({ resources: [`tcp:${mqtt_host}:${mqtt_port}`] });
+      debug(`waiting for redis (${redis_host}:${redis_port})`);
+      await waitOn({ resources: [`tcp:${redis_host}:${redis_port}`] });
+      debug(`waiting for mongo (${mongo_host}:${mongo_port})`);
+      await waitOn({ resources: [`tcp:${mongo_host}:${mongo_port}`] });
+    } catch (e) {
+      debug("***** exception ", e.stack);
+      console.log("this is a error hai.");
+    }
+  };
 
 const main = async () => {
   debug("About to wait for services");
@@ -49,7 +50,7 @@ const main = async () => {
     redis = Redis.createClient(redisUrl),
     redis_index = 0;
 
-  redis.on("error", function(err) {
+  redis.on("error", function (err) {
     debug("REDIS Error " + err);
   });
 
@@ -167,12 +168,12 @@ const main = async () => {
     "subscriber/commands": async (collection, message) => {
       debug("--- COMMANDS", message);
       return JSON.stringify(Object.keys(topics));
-    }
+    },
   };
 
   // Use connect method to connect to the Server
   debug("connecting to MongoDB", mongoUrl);
-  mongo.connect(function(err) {
+  mongo.connect(function (err) {
     if (err) {
       debug("MongoDB connect error:", err);
       return;
@@ -188,7 +189,7 @@ const main = async () => {
       debug("connected to ", mqttUrl, "port", mqtt_port);
       debug("\n");
       debug("WAITING FOR MESSAGES FROM PUBLISHER");
-      mqtt.subscribe("subscriber/#", err => {
+      mqtt.subscribe("subscriber/#", (err) => {
         if (err) {
           debug("MQTT subscribe error:", err);
         }

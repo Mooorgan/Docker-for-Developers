@@ -1,10 +1,10 @@
 # Simple docker complse override configuration file for chapter4/ application
 
-version: '3'
+version: "3"
 services:
-
   redis:
     image: redis
+    container_name: my-redis
     volumes:
       - /tmp/redis:/data
     ports:
@@ -12,6 +12,7 @@ services:
 
   mongodb:
     image: mongo
+    container_name: my-mongo
     volumes:
       - /tmp/mongo:/data/db
     ports:
@@ -19,6 +20,7 @@ services:
 
   mosca:
     image: matteocollina/mosca
+    container_name: my-mosca
     volumes:
       - /tmp/mosca:/db
     ports:
@@ -27,17 +29,20 @@ services:
 
   publisher:
     build: publisher
+    image: publisher
+    container_name: my-publisher
     environment:
-    - MQTT_HOST=${HOSTIP}
-    - REDIS_HOST=${HOSTIP}
-    - MONGO_HOST=${HOSTIP}
+      - MQTT_HOST=${HOSTIP}
+      - REDIS_HOST=${HOSTIP}
+      - MONGO_HOST=${HOSTIP}
     ports:
       - 3000:3000
 
   subscriber:
     build: subscriber
+    image: subscriber
+    container_name: my-subscriber
     environment:
-    - MQTT_HOST=${HOSTIP}
-    - REDIS_HOST=${HOSTIP}
-    - MONGO_HOST=${HOSTIP}
-
+      - MQTT_HOST=${HOSTIP}
+      - REDIS_HOST=${HOSTIP}
+      - MONGO_HOST=${HOSTIP}

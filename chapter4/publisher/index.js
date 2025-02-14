@@ -17,24 +17,26 @@ const debug = require("debug")("publisher"),
  */
 const waitOn = require("wait-on"),
   wait_for_services = async () => {
-  try {
-    await waitOn({ resources: [`tcp:${mqtt_host}:${mqtt_port}`] });
-  } catch (e) {
-    debug("waitOn exception", e.stack);
-  }
-};
+    try {
+      await waitOn({ resources: [`tcp:${mqtt_host}:${mqtt_port}`] });
+    } catch (e) {
+      debug("waitOn exception", e.stack);
+    }
+  };
 
 const main = async () => {
-  debug(`publisher miscroservice, about to wait for MQTT host(${mqtt_host}, ${mqtt_port}`);
+  debug(
+    `publisher miscroservice, about to wait for MQTT host(${mqtt_host}, ${mqtt_port}`
+  );
   await wait_for_services();
   debug("---> wait succeeded");
   const MQTT = require("mqtt"),
-   mqtt = MQTT.connect(mqttUrl, mqtt_port);
-
+    mqtt = MQTT.connect(mqttUrl, mqtt_port);
+  console.log("Hello from publisher hai");
   debug("publisher connecting to MQTT", mqttUrl);
   mqtt.on("connect", async () => {
     debug("connected to ", mqtt_host, "port", mqtt_port);
-
+    console.log("Hello");
     const express = require("express"),
       app = express(),
       port = 3000;
@@ -88,7 +90,7 @@ const main = async () => {
       html(res, "", "");
     });
 
-    mqtt.subscribe(["publisher", "publisher/#"], err => {
+    mqtt.subscribe(["publisher", "publisher/#"], (err) => {
       if (err) {
         debug("err!", err);
       }
@@ -108,7 +110,7 @@ const main = async () => {
       }
     });
 
-    const sleep = async msec => {
+    const sleep = async (msec) => {
       return new Promise((resolve, reject) => {
         setTimeout(() => {
           debug("slept");
@@ -132,7 +134,7 @@ const main = async () => {
       try {
         await mqtt.publish(`subscriber/${topic}`, value, {
           qos: 0,
-          retain: false
+          retain: false,
         });
         const result = await receive();
         debug("result", result);
@@ -232,4 +234,3 @@ const main = async () => {
 };
 
 main();
-

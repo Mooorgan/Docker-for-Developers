@@ -2,6 +2,6 @@
 
 # start-publisher.sh
 
-yarn start
+npm start
 
 

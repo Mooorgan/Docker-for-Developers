@@ -1,6 +1,5 @@
-version: '3'
+version: "3"
 services:
-
   redis:
     image: redis
 
@@ -16,14 +15,17 @@ services:
 
   publisher:
     build: publisher
+    image: publisher_small
+    container_name: my-publisher_small
     depends_on:
       - "mosca"
       - "subscriber"
 
   subscriber:
     build: subscriber
+    image: subscriber_small
+    container_name: my-subscriber_small
     depends_on:
       - "redis"
       - "mongodb"
       - "mosca"
-

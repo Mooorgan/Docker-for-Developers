@@ -6,6 +6,6 @@
 
 export HOSTIP=127.0.0.1
 export LINKS='--link mosca --link redis --link mongodb'
-yarn start
+npm start
 
 

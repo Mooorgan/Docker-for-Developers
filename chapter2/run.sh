@@ -10,5 +10,5 @@ docker run \
     --rm \
     -p8086:80 \
     -v name:/data \
-    --name="chapter2" \
+    --name chapter2 \
     chapter2

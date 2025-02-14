@@ -2,6 +2,6 @@
 
 # start-subscriber.sh
 
-yarn start
+npm start
 
 
